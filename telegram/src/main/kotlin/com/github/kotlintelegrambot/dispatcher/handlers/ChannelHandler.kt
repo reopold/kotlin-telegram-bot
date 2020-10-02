@@ -5,15 +5,15 @@ import com.github.kotlintelegrambot.entities.Message
 import com.github.kotlintelegrambot.entities.Update
 
 data class ChannelHandlerEnvironment(
-    val bot: Bot,
-    val update: Update,
+    override val bot: Bot,
+    override val update: Update,
     val channelPost: Message,
     val isEdition: Boolean
-)
+) : HandlerEnvironment(bot, update)
 
 internal class ChannelHandler(
-    handleChannelPost: HandleChannelPost
-) : Handler(ChannelHandlerProxy(handleChannelPost)) {
+    private val handle: HandleChannelPost
+) : Handler() {
 
     override val groupIdentifier: String
         get() = "channel"
@@ -21,11 +21,6 @@ internal class ChannelHandler(
     override fun checkUpdate(update: Update): Boolean {
         return update.channelPost != null || update.editedChannelPost != null
     }
-}
-
-private class ChannelHandlerProxy(
-    private val handleChannelPost: HandleChannelPost
-) : HandleUpdate {
 
     override fun invoke(bot: Bot, update: Update) {
         val channelHandlerEnv = when {
@@ -44,6 +39,6 @@ private class ChannelHandlerProxy(
             else -> error("This method must only be invoked when there is any type of channel post.")
         }
 
-        handleChannelPost.invoke(channelHandlerEnv)
+        handle.invoke(channelHandlerEnv)
     }
 }

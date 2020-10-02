@@ -1,9 +1,7 @@
 package com.github.kotlintelegrambot.dispatcher.handlers
 
-import com.github.kotlintelegrambot.Bot
 import com.github.kotlintelegrambot.dispatcher.handlers.media.MediaHandlerEnvironment
 import com.github.kotlintelegrambot.entities.Game
-import com.github.kotlintelegrambot.entities.Update
 import com.github.kotlintelegrambot.entities.files.Animation
 import com.github.kotlintelegrambot.entities.files.Audio
 import com.github.kotlintelegrambot.entities.files.Document
@@ -13,7 +11,7 @@ import com.github.kotlintelegrambot.entities.files.VideoNote
 import com.github.kotlintelegrambot.entities.files.Voice
 import com.github.kotlintelegrambot.entities.stickers.Sticker
 
-typealias HandleUpdate = (Bot, Update) -> Unit
+typealias HandleUpdate = HandlerEnvironment.() -> Unit
 
 typealias HandleError = ErrorHandlerEnvironment.() -> Unit
 
